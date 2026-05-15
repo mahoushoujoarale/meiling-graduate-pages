@@ -1,0 +1,62 @@
+[
+  {
+    "name": "利尿剂总剂量",
+    "is_binary": false,
+    "min": 0.0,
+    "max": 260.0,
+    "mean": 1.5360185185185187,
+    "median": 0.0,
+    "default": 0.0,
+    "step": 2.6
+  },
+  {
+    "name": "心率HR",
+    "is_binary": false,
+    "min": 19.0,
+    "max": 567.0,
+    "mean": 94.03996197966838,
+    "median": 85.5,
+    "default": 85.5,
+    "step": 5.48
+  },
+  {
+    "name": "钙离子(Ca2+)",
+    "is_binary": false,
+    "min": 1.5,
+    "max": 2.79,
+    "mean": 2.1664652335033887,
+    "median": 2.185,
+    "default": 2.19,
+    "step": 0.01
+  },
+  {
+    "name": "白细胞计数(WBC#)",
+    "is_binary": false,
+    "min": 2.3,
+    "max": 30.2,
+    "mean": 8.653765432098766,
+    "median": 7.46,
+    "default": 7.46,
+    "step": 0.28
+  },
+  {
+    "name": "钾离子(K+)",
+    "is_binary": false,
+    "min": 2.4,
+    "max": 7.6,
+    "mean": 4.042447530864198,
+    "median": 4.03,
+    "default": 4.03,
+    "step": 0.05
+  },
+  {
+    "name": "总胆红素(TBIL)",
+    "is_binary": false,
+    "min": 1.7,
+    "max": 84.0,
+    "mean": 13.22229422487178,
+    "median": 10.701,
+    "default": 10.7,
+    "step": 0.82
+  }
+]
