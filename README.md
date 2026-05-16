@@ -11,9 +11,9 @@
 ## 文件结构
 
 ```
-cf-deploy/
+meiling-graduate-pages/
 ├── index.html              # 主页面 (含全部前端逻辑)
-├── model.onnx              # CatBoost ONNX 模型 (~5.2MB)
+├── model.onnx              # CatBoost ONNX 模型
 ├── scaler.json             # StandardScaler 参数 (均值/标准差)
 ├── feature_meta.json       # 特征元数据 (范围/默认值)
 ├── feature_importance.json # 特征重要性 (用于近似 SHAP)
@@ -23,7 +23,7 @@ cf-deploy/
 ## 本地预览
 
 ```bash
-cd cf-deploy
+cd meiling-graduate-pages
 python -m http.server 8080
 # 打开 http://localhost:8080
 ```
@@ -35,7 +35,7 @@ python -m http.server 8080
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com)
 2. 进入 **Pages** → **创建项目**
 3. 选择 **直接上传**
-4. 将 `cf-deploy/` 目录下所有文件打包为 zip 上传
+4. 将 `meiling-graduate-pages/` 目录下所有文件打包为 zip 上传
 5. 项目构建框架选择 **None**
 6. 部署完成，获得 `*.pages.dev` 域名
 
@@ -47,15 +47,13 @@ npm install -g wrangler
 
 # 登录 Cloudflare
 wrangler login
-
-# 部署
-cd cf-deploy
+cd meiling-graduate-pages
 wrangler pages deploy .
 ```
 
 ### 方式三：Git 集成 (推荐)
 
-1. 将 `cf-deploy/` 内容推送到 Git 仓库
+1. 将 `meiling-graduate-pages/` 内容推送到 Git 仓库
 2. 在 Cloudflare Pages 创建项目，连接该仓库
 3. 构建设置：
    - **构建命令**: 留空
@@ -66,8 +64,8 @@ wrangler pages deploy .
 
 | 特征 | 范围 | 说明 |
 |---|---|---|
-| 利尿剂总剂量 | 0 ~ 260 | 用药剂量 |
-| 心率HR | 19 ~ 567 | 心跳次数/分钟 |
+| 利尿剂总剂量 | 0 ~ 0.86 | 用药剂量 |
+| 心率HR | 19 ~ 254 | 心跳次数/分钟 |
 | 钙离子(Ca2+) | 1.5 ~ 2.79 | 血清钙浓度 |
 | 白细胞计数(WBC#) | 2.3 ~ 30.2 | 白细胞数量 |
 | 钾离子(K+) | 2.4 ~ 7.6 | 血清钾浓度 |
@@ -75,11 +73,11 @@ wrangler pages deploy .
 
 ## 模型性能 (测试集)
 
-- AUC (ROC): 0.8705
-- Accuracy: 0.8367
-- Sensitivity: 0.6500
-- Specificity: 0.8846
-- Brier Score: 0.1096
+- AUC (ROC): 0.9162
+- Accuracy: 0.9278
+- Sensitivity: 0.7059
+- Specificity: 0.9750
+- Brier Score: 0.0662
 
 ## 技术栈
 

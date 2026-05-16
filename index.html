@@ -102,6 +102,15 @@
     .risk-low { background: var(--success-light); color: var(--success); }
     .risk-mid { background: var(--warning-light); color: var(--warning); }
     .risk-high { background: var(--danger-light); color: var(--danger); }
+    .model-info { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; text-align: center; }
+    .loading { display: none; text-align: center; padding: 20px; }
+    .loading .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .model-loading { text-align: center; padding: 40px; color: var(--text-muted); }
+    .model-loading .spinner { width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+    .empty-state { text-align: center; color: var(--text-muted); padding: 40px 20px; }
+    .empty-state .big { font-size: 3rem; margin-bottom: 8px; }
+    .section-title { font-size: 0.9rem; font-weight: 600; margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
     .shap-chart { margin-top: 16px; }
     .shap-bar { display: flex; align-items: center; margin-bottom: 10px; gap: 10px; }
     .shap-bar-label { width: 120px; font-size: 0.8rem; text-align: right; flex-shrink: 0; }
@@ -110,21 +119,12 @@
       height: 100%; border-radius: 4px; transition: width 0.6s ease; min-width: 2px;
     }
     .shap-bar-value { font-size: 0.8rem; min-width: 60px; text-align: right; flex-shrink: 0; }
+    .shap-pos { color: var(--danger); font-weight: 600; }
+    .shap-neg { color: var(--primary); font-weight: 600; }
     .feature-table { width: 100%; font-size: 0.82rem; border-collapse: collapse; margin-top: 12px; }
     .feature-table th { text-align: left; padding: 6px 8px; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border); }
     .feature-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
     .feature-table tr:last-child td { border-bottom: none; }
-    .shap-pos { color: var(--danger); font-weight: 600; }
-    .shap-neg { color: var(--primary); font-weight: 600; }
-    .section-title { font-size: 0.9rem; font-weight: 600; margin: 16px 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-    .empty-state { text-align: center; color: var(--text-muted); padding: 40px 20px; }
-    .empty-state .big { font-size: 3rem; margin-bottom: 8px; }
-    .model-info { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; text-align: center; }
-    .loading { display: none; text-align: center; padding: 20px; }
-    .loading .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 10px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .model-loading { text-align: center; padding: 40px; color: var(--text-muted); }
-    .model-loading .spinner { width: 48px; height: 48px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px; }
   </style>
 </head>
 <body>
@@ -140,7 +140,6 @@
   </div>
 
   <div class="container" id="mainContent" style="display:none;">
-    <!-- 左侧：表单 -->
     <div class="card">
       <div class="card-title">
         <div class="icon" style="background: var(--primary-light); color: var(--primary);">&#128203;</div>
@@ -149,41 +148,28 @@
       <form id="predictForm">
         <div class="feature-grid" id="featureGrid"></div>
       </form>
-
       <div class="actions">
-        <button class="btn btn-primary" onclick="submitPredict()">
-          <span>&#128302;</span> 预测风险
-        </button>
-        <button class="btn btn-secondary" onclick="fillDemo('high')">
-          <span>&#128293;</span> 高风险示例
-        </button>
-        <button class="btn btn-secondary" onclick="fillDemo('low')">
-          <span>&#128154;</span> 低风险示例
-        </button>
-        <button class="btn btn-secondary" onclick="resetForm()">
-          <span>&#128260;</span> 重置
-        </button>
+        <button class="btn btn-primary" onclick="submitPredict()">&#128302; 预测风险</button>
+        <button class="btn btn-secondary" onclick="fillDemo('high')">&#128293; 高风险示例</button>
+        <button class="btn btn-secondary" onclick="fillDemo('low')">&#128154; 低风险示例</button>
+        <button class="btn btn-secondary" onclick="resetForm()">&#128260; 重置</button>
       </div>
     </div>
 
-    <!-- 右侧：结果 -->
     <div class="card result-card">
       <div class="card-title">
         <div class="icon" style="background: var(--success-light); color: var(--success);">&#128200;</div>
         预测结果
       </div>
-
       <div id="resultEmpty" class="empty-state">
         <div class="big">&#129516;</div>
         <div>请输入患者特征并点击「预测风险」</div>
         <div style="font-size:0.8rem; margin-top:6px;">模型在浏览器中直接运行，无需后端服务器</div>
       </div>
-
       <div id="resultLoading" class="loading">
         <div class="spinner"></div>
         <div>正在计算预测与解释...</div>
       </div>
-
       <div id="resultContent" style="display:none;">
         <div class="probability-ring">
           <svg width="160" height="160" viewBox="0 0 160 160">
@@ -198,7 +184,6 @@
             </div>
           </div>
         </div>
-
         <div style="text-align:center;">
           <span id="riskBadge" class="risk-badge risk-low">低风险</span>
         </div>
@@ -207,7 +192,6 @@
         <div style="margin-top: 20px;">
           <div class="section-title">特征贡献解释 (近似 SHAP)</div>
           <div id="shapChart" class="shap-chart"></div>
-
           <div class="section-title">Top 影响因子</div>
           <table class="feature-table">
             <thead><tr><th>特征</th><th>SHAP值</th><th>方向</th></tr></thead>
@@ -219,7 +203,6 @@
   </div>
 
   <script>
-    // ===================== 全局数据 =====================
     let MODEL = null;
     let FEATURES = [];
     let SCALER = { mean: [], scale: [] };
@@ -235,13 +218,10 @@
       '白细胞计数(WBC#)': 6.5, '钾离子(K+)': 4.2, '总胆红素(TBIL)': 10.0
     };
 
-    // ===================== 加载资产 =====================
     async function loadAssets() {
       try {
         const [metaResp, scalerResp, fiResp] = await Promise.all([
-          fetch('feature_meta.json'),
-          fetch('scaler.json'),
-          fetch('feature_importance.json')
+          fetch('feature_meta.json'), fetch('scaler.json'), fetch('feature_importance.json')
         ]);
         META = await metaResp.json();
         const scalerData = await scalerResp.json();
@@ -249,10 +229,8 @@
         FEATURES = scalerData.features;
         FI = await fiResp.json();
 
-        // 加载 ONNX 模型
         MODEL = await ort.InferenceSession.create('model.onnx', {
-          executionProviders: ['wasm'],
-          graphOptimizationLevel: 'all'
+          executionProviders: ['wasm'], graphOptimizationLevel: 'all'
         });
 
         document.getElementById('modelLoading').style.display = 'none';
@@ -265,7 +243,6 @@
       }
     }
 
-    // ===================== 渲染表单 =====================
     function renderForm() {
       const grid = document.getElementById('featureGrid');
       grid.innerHTML = '';
@@ -299,7 +276,6 @@
       slider.value = num.value;
     }
 
-    // ===================== 表单操作 =====================
     function fillDemo(type) {
       const data = type === 'high' ? DEMO_HIGH : DEMO_LOW;
       for (const [name, val] of Object.entries(data)) {
@@ -309,7 +285,6 @@
         if (slider) slider.value = val;
       }
     }
-
     function resetForm() {
       META.forEach(meta => {
         const input = document.getElementById('input_' + meta.name);
@@ -319,7 +294,6 @@
       });
     }
 
-    // ===================== 预测 =====================
     async function submitPredict() {
       const data = {};
       META.forEach(meta => {
@@ -332,26 +306,18 @@
       document.getElementById('resultLoading').style.display = 'block';
 
       try {
-        // 标准化
         const row = FEATURES.map(f => data[f]);
         const scaled = row.map((v, i) => (v - SCALER.mean[i]) / SCALER.scale[i]);
-
-        // ONNX 推理
         const tensor = new ort.Tensor('float32', new Float32Array(scaled), [1, FEATURES.length]);
         const feeds = {};
-        const inputName = MODEL.inputNames[0];
-        feeds[inputName] = tensor;
+        feeds[MODEL.inputNames[0]] = tensor;
         const results = await MODEL.run(feeds);
-
-        // 获取概率张量 (shape [1, 2]: [prob_neg, prob_pos])
         const probTensor = results.probability_tensor || results.probabilities;
-        const output = probTensor.data;
-        const prob = output[1]; // 阳性概率 (index 1)
+        const prob = probTensor.data[1];
 
-        // 计算近似 SHAP：基于特征偏离均值的程度和特征重要性
         const shapValues = FEATURES.map((f, i) => ({
           feature: f,
-          value: FI[f] * (scaled[i]) / 5, // 简化近似
+          value: FI[f] * (scaled[i]) / 5,
           raw: scaled[i]
         })).sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
 
@@ -366,6 +332,12 @@
     function showResult(prob, shapValues) {
       document.getElementById('resultLoading').style.display = 'none';
       document.getElementById('resultContent').style.display = 'block';
+      setTimeout(() => {
+        const resultCard = document.querySelector('.result-card');
+        if (resultCard && window.innerWidth <= 1100) {
+          resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
 
       const pct = (prob * 100).toFixed(1);
       document.getElementById('probValue').textContent = pct + '%';
@@ -386,7 +358,7 @@
 
       document.getElementById('modelInfo').textContent = `模型: CatBoost (ONNX) | 特征数: ${FEATURES.length}`;
 
-      // 渲染 SHAP 条形图（从左侧开始，避免遮挡）
+      // SHAP 条形图
       const chart = document.getElementById('shapChart');
       chart.innerHTML = '';
       const maxAbs = Math.max(...shapValues.map(s => Math.abs(s.value)), 0.001);
@@ -405,7 +377,7 @@
         chart.appendChild(bar);
       });
 
-      // 渲染 Top 影响因子表格
+      // Top 表格
       const tbody = document.getElementById('shapTable');
       tbody.innerHTML = '';
       shapValues.slice(0, 6).forEach(s => {
@@ -417,7 +389,6 @@
       });
     }
 
-    // 启动
     loadAssets();
   </script>
 </body>
