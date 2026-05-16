@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>罕见病不良反应风险预测系统</title>
+  <title>尖端扭转型室速不良反应预测系统</title>
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/ort.min.js"></script>
   <style>
     :root {
@@ -129,8 +129,8 @@
 </head>
 <body>
   <div class="header">
-    <h1>罕见病不良反应风险预测系统</h1>
-    <p>基于 CatBoost 模型 &middot; 6 项最优特征 &middot; 浏览器端 ONNX 推理</p>
+    <h1>尖端扭转型室速不良反应预测系统</h1>
+    <p>基于 CatBoost 模型 · 6 项最优特征 · 浏览器端 ONNX 推理</p>
   </div>
 
   <div id="modelLoading" class="model-loading">
@@ -275,7 +275,7 @@
         div.dataset.feature = meta.name;
         div.innerHTML = `
           <div class="feature-label">${meta.name}</div>
-          <div class="feature-hint">范围: ${meta.min} ~ ${meta.max} | 中位数: ${meta.median}</div>
+          <div class="feature-hint">单位: ${meta.unit || ''}</div>
           <div class="feature-input-wrap">
             <input type="range" min="${meta.min}" max="${meta.max}" step="${meta.step}" value="${meta.default}"
                    id="slider_${meta.name}" oninput="syncNumber('${meta.name}')">
